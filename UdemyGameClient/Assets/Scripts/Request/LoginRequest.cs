@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Common;
 
-public class LoginRequest : BaseRequest {
-
+public class LoginRequest : BaseRequest
+{
     private LoginPanel loginPanel;
-
  
     public override void Awake()
     {
@@ -23,8 +22,6 @@ public class LoginRequest : BaseRequest {
         base.SendRequest(data);
     }
 
-
-
     public override void OnResponse(string data)
     {
         //returncode+username+totalcount+wincount
@@ -40,5 +37,4 @@ public class LoginRequest : BaseRequest {
         }
         loginPanel.OnLoginResponse(returnCode);
     }
-
 }

@@ -20,6 +20,7 @@ public class RoomListPanel : BasePanel
     private List<UserData> udList = null;
     private CreateRoomRequest crRequest;
     private JoinRoomRequest jrRequest;
+
     private void Start()
     {
 
@@ -40,24 +41,24 @@ public class RoomListPanel : BasePanel
         if (battleRes != null)
         {
             EnterAnim();
-
         }
+
         SetBattleRes();
+
         if (lrRequest == null)
         {
             lrRequest = GetComponent<ListRoomRequest>();
         }
+
         lrRequest.SendRequest();
-
-
     }
 
     public override void OnResume()
     {
         EnterAnim();
         lrRequest.SendRequest();
-
     }
+
     public override void OnPause()
     {
         HideAnim();
@@ -71,15 +72,14 @@ public class RoomListPanel : BasePanel
 
         roomList.transform.localPosition = new Vector3(1000, 0, 0);
         roomList.DOLocalMoveX(145, 0.5f);
-
     }
+
     private void HideAnim()
     {
         battleRes.DOLocalMoveX(-1000, 0.5f);
         Tweener tweener = roomList.DOLocalMoveX(1000, 0.5f);
         tweener.OnComplete(() => gameObject.SetActive(false));
     }
-
 
     private void OnCloseClick()
     {
@@ -90,6 +90,7 @@ public class RoomListPanel : BasePanel
     {
         HideAnim();
     }
+
     private void SetBattleRes()
     {
         UserData ud = facade.GetUserData();
@@ -97,19 +98,23 @@ public class RoomListPanel : BasePanel
         transform.Find("BattleRes/TotalCount").GetComponent<Text>().text = ud.totalCount.ToString();
         transform.Find("BattleRes/WinCount").GetComponent<Text>().text = ud.winCount.ToString();
     }
+
     public void LoadRoomItemSync(List<UserData> udList)
     {
         this.udList = udList;
     }
+
     private void LoadRoomItem(List<UserData> udList)
     {
         RoomItem[] riArray = roomLayout.GetComponentsInChildren<RoomItem>();
+
         foreach (RoomItem ri in riArray)
         {
             ri.DestroySelf();
         }
 
         int count = udList.Count;
+
         for (int i = 0; i < count; i++)
         {
             GameObject roomItem = Instantiate(roomItemPrefab);
@@ -118,22 +123,27 @@ public class RoomListPanel : BasePanel
             roomItem.GetComponent<RoomItem>().SetRoomInfo(ud.id, ud.username, ud.totalCount.ToString(), ud.winCount.ToString(), this);
 
         }
+
         int roomCount = GetComponentsInChildren<RoomItem>().Length;
     }
+
     public void OnJoinClick(int id)
     {
         jrRequest.SendRequest(id);
     }
+
     private void OnCreateRoomClick()
     {
         BasePanel panel = uiMng.PushPanel(UIPanelType.Room);
         crRequest.SendRequest();
         crRequest.SetPanel(panel);
     }
+
     private void OnRefreshClick()
     {
         lrRequest.SendRequest();
     }
+
     private void Update()
     {
         if (udList != null)
@@ -141,16 +151,15 @@ public class RoomListPanel : BasePanel
             LoadRoomItem(udList);
             udList = null;
         }
+
         if (join1)
         {
             BasePanel panel = uiMng.PushPanel(UIPanelType.Room);
             (panel as RoomPanel).SetAllPlayerResSync(ud1, ud2);
             join1 = false;
         }
-
-
-
     }
+
     public void OnJoinResponse(ReturnCode returncode, UserData ud1, UserData ud2)
     {
         switch (returncode)
@@ -165,11 +174,7 @@ public class RoomListPanel : BasePanel
                 this.ud1 = ud1;
                 this.ud2 = ud2;
                 join1 = true;
-
-
                 break;
         }
     }
 }
-
-

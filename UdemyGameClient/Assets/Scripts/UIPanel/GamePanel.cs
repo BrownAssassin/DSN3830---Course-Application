@@ -13,6 +13,8 @@ public class GamePanel : BasePanel {
 
     private Button succesButton;
     private Button failButton;
+    private RoomListPanel roomListPanel;
+
 	void Start () {
         timer = transform.Find("Timer").GetComponent<Text>();
         timer.gameObject.SetActive(false);
@@ -42,23 +44,29 @@ public class GamePanel : BasePanel {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (this.time > -1)
         {
             ShowTimer(time);
             time = -1;
         }
 	}
+
     private void OnResultClick()
     {
         uiMng.PopPanel();
         uiMng.PopPanel();
+        uiMng.PopPanel();
+        uiMng.PopPanel();
         facade.GameOver();
     }
+
     public override void OnEnter()
     {
         gameObject.SetActive(true);
     }
+
     public override void OnExit()
     {
         gameObject.SetActive(false);
@@ -72,7 +80,6 @@ public class GamePanel : BasePanel {
                 succesButton.gameObject.SetActive(true);
                 break;
             case ReturnCode.Fail:
-
                 failButton.gameObject.SetActive(true);
                 break;
         }

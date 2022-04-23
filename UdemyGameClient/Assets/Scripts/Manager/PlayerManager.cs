@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Common;
 
-public class PlayerManager : BaseManager {
-
+public class PlayerManager : BaseManager
+{
     public PlayerManager(GameFacade facade) : base(facade) { }
     private UserData ud;
     private Dictionary<RoleType, RoleData> roleDataDict = new Dictionary<RoleType, RoleData>();
@@ -15,6 +15,7 @@ public class PlayerManager : BaseManager {
     private GameObject playerSyncRequest;
     private ShootRequest shootRequest;
     private AttackRequest attackRequest;
+
     public UserData UserData
     {
         set { ud = value; }
@@ -26,7 +27,6 @@ public class PlayerManager : BaseManager {
         rolePositions = GameObject.Find("RolePositions").transform;
         InitRoleDataDict();
     }
-
 
     private void InitRoleDataDict()
     {
@@ -50,14 +50,17 @@ public class PlayerManager : BaseManager {
             }
         }
     }
+
     public void SetCurrentRoleType(RoleType rt)
     {
         this.currentRoleType = rt;
     }
+
     public GameObject GetCurrentRoleGameObject()
     {
         return currentRoleGameObject;
     }
+
     public void AddControlScript()
     {
         currentRoleGameObject.AddComponent<PlayerMove>();
@@ -74,6 +77,7 @@ public class PlayerManager : BaseManager {
         roleDataDict.TryGetValue(rt, out rd);
         return rd;
     }
+
     public void CreateSyncRequest()
     {
         playerSyncRequest= new GameObject("PlayerSyncRequest");
@@ -82,12 +86,14 @@ public class PlayerManager : BaseManager {
         shootRequest.playerMng = this;
         attackRequest= playerSyncRequest.AddComponent<AttackRequest>();
     }
+
     public void Shoot(GameObject arrowPrefab,Vector3 pos,Quaternion rotation)
     {
         Instantiate(arrowPrefab, pos, rotation).GetComponent<Arrow>().isLocal = true;
         shootRequest.SendRequest(arrowPrefab.GetComponent<Arrow>().roleType, pos, rotation.eulerAngles);
         //remoteRoleGameObject.GetComponent<Animator>().SetTrigger("Attack");
     }
+
    public void RemoteShoot(RoleType roleType,Vector3 pos,Vector3 rot)
     {
         GameObject arrowPrefab = GetRoleDataByRoleType(roleType).arrowPrefab;
@@ -95,10 +101,12 @@ public class PlayerManager : BaseManager {
         ts.position = pos;
         ts.eulerAngles = rot;
     } 
+
     public void SendAttack(int damage)
     {
         attackRequest.SendRequest(damage);
     }
+
     public void GameOver()
     {
         Destroy(currentRoleGameObject);
@@ -107,6 +115,5 @@ public class PlayerManager : BaseManager {
         attackRequest = null;
         shootRequest = null;
     }
-
 }
 

@@ -11,15 +11,12 @@ public class StartPanel : BasePanel
     public override void OnEnter()
     {
 
-         loginButton = transform.Find("LoginButton").GetComponent<Button>();
+        loginButton = transform.Find("LoginButton").GetComponent<Button>();
         loginButton.onClick.AddListener(OnLoginClick);
-        
     }
+    
     private void OnLoginClick()
     {
         uiMng.PushPanel(UIPanelType.Login);
     }
-   
-
-
 }

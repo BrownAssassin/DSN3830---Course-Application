@@ -49,5 +49,5 @@ namespace GameServer001.Controller
         }
 
     }
-  //controllerManager=>SErver=>Client
+  //controllerManager=>Server=>Client
 }

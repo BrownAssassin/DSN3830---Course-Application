@@ -88,8 +88,5 @@ namespace GameServer001.DAO
                 Console.Write(e);
             }
         }
-
-        
-
     }
 }
