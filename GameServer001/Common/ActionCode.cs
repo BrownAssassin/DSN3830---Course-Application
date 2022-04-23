@@ -20,6 +20,6 @@ namespace Common
         Shoot,
         Attack,
         GameOver,
-          QuitRoom
+        QuitRoom
     }
 }
